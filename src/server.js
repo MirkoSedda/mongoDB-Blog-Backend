@@ -4,6 +4,7 @@ import listEndpoints from "express-list-endpoints"
 import cors from "cors"
 
 import blogsRouter from "./services/blogs/index.js"
+import commentsRouter from "./services/comments/index.js"
 import { badRequestHandler, notFoundHandler, genericErrorHandler } from "./errorHandlers.js"
 
 const server = express()
@@ -16,7 +17,7 @@ server.use(express.json())
 
 // ****************************************** ENDPOINTS ***************************************
 
-server.use("/blogs", blogsRouter)
+server.use("/blogs", [blogsRouter, commentsRouter])
 
 // ***************************************** ERROR HANDLERS ***********************************
 
