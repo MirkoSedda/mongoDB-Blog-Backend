@@ -1,6 +1,6 @@
 import express from 'express'
 import createError from 'http-errors'
-import BlogsModel from './model.js'
+import blogsModel from './model.js'
 
 const blogsRouter = express.Router()
 
@@ -64,12 +64,40 @@ blogsRouter.put('/:blogId', async (req, res, next) => {
 
 blogsRouter.delete('/:blogId', async (req, res, next) => {
     try {
-        const deletedBlogs = await BlogsModel.findByIdAndDelete(req.params.blogId)
+        const deletedBlogs = await blogsModel.findByIdAndDelete(req.params.blogId)
         if (deletedBlogs) res.status(204).send()
         else next(createError(404, `Blog with id ${req.params.blogId} not found!`))
     } catch (error) {
         next(error)
         console.log(error)
+    }
+})
+
+//GET /blogPosts/:id/comments
+
+blogsRouter.post('/:blogId/comments', async (req, res, next) => {
+    try {
+        const blog = await blogsModel.findById(req.params.blogId, { _id: 0 })
+        console.log(blog)
+        if (blog) {
+            const comments = req.body
+            console.log(comments)
+            const commentToInsert = {
+                ...comments,
+                commentDate: new Date(),
+            }
+            const modifiedBlog = await blogsModel.findByIdAndUpdate(
+                req.params.blogId,
+                { $push: { comments: commentToInsert } },
+                { new: true }
+            )
+            if (modifiedBlog) res.send(modifiedBlog)
+            else next(createError(404, `Blog with id ${req.params.userId} not found!`))
+        } else {
+            next(createError(404, `Blog with id ${req.body.bookId} has no comments!`))
+        }
+    } catch (error) {
+        next(error)
     }
 })
 
