@@ -2,6 +2,7 @@ import express from 'express'
 import createError from 'http-errors'
 import blogsModel from './model.js'
 import q2m from 'query-to-mongo'
+import authorsSchema from '../authors/model.js'
 
 const blogsRouter = express.Router()
 
@@ -14,6 +15,7 @@ blogsRouter.get("/", async (req, res, next) => {
             .sort(mongoQuery.options.sort) //Mongo will ALWAYS do SORT, SKIP, LIMIT no matter what!
             .skip(mongoQuery.options.skip, 0)
             .limit(mongoQuery.options.limit, 20)
+            .populate({ path: "author" })
         res.send({
             links: mongoQuery.links(`http://localhost:3001/blogs`, total),
             total,

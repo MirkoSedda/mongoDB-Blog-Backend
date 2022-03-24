@@ -5,6 +5,7 @@ import cors from "cors"
 
 import blogsRouter from "./services/blogs/index.js"
 import commentsRouter from "./services/comments/index.js"
+import authorsRouters from "./services/authors/index.js"
 import { badRequestHandler, notFoundHandler, genericErrorHandler } from "./errorHandlers.js"
 
 const server = express()
@@ -18,7 +19,7 @@ server.use(express.json())
 // ****************************************** ENDPOINTS ***************************************
 
 server.use("/blogs", [blogsRouter, commentsRouter])
-server.use("/blogs", [blogsRouter, commentsRouter])
+server.use("/authors", authorsRouters)
 
 // ***************************************** ERROR HANDLERS ***********************************
 
@@ -26,7 +27,7 @@ server.use(badRequestHandler)
 server.use(notFoundHandler)
 server.use(genericErrorHandler)
 
-mongoose.connect(process.env.MONGODB_CONNECTION)
+mongoose.connect(process.env.MONGO_CONNECTION)
 
 mongoose.connection.on("connected", () => {
     console.log("Successfully connected to Mongo!")
