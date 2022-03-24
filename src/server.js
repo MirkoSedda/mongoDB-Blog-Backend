@@ -18,6 +18,7 @@ server.use(express.json())
 // ****************************************** ENDPOINTS ***************************************
 
 server.use("/blogs", [blogsRouter, commentsRouter])
+server.use("/blogs", [blogsRouter, commentsRouter])
 
 // ***************************************** ERROR HANDLERS ***********************************
 
