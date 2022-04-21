@@ -5,10 +5,11 @@ const { Schema, model } = mongoose
 
 const AuthorSchema = new Schema(
   {
-    name: { type: String, required: true },
-    avatar: { type: String, required: true },
+    name: { type: String },
+    surname: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    avatar: { type: String },
     role: { type: String, enum: ["User", "Admin"], default: "User" },
     blog: [{ type: Schema.Types.ObjectId, ref: "Blog" }],
   },
